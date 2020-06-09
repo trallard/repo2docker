@@ -1,0 +1,13 @@
+name: Freeze bot
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  refreeze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+      - name: Check PR comments
