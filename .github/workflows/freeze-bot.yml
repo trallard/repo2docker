@@ -8,6 +8,20 @@ jobs:
   refreeze:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone repo
-        uses: actions/checkout@master
-      - name: Check PR comments
+      - uses: actions/checkout@master
+      - name: Setup
+        uses: actions/setup-python@v2
+        with:
+          python.version: 3.8
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip ruamel.yaml
+      - name: Monitor comments
+        id: prcomment
+        with:
+          BOT_PHRASE: "/winter-is-coming"
+        run: |
+          python ./repo2docker/buildpacks/conda/freeze-bot.py
+      - name: To freeze or not to freeze
+        if: steps.prcomment.TRIGGER_ACTION == 'true'
+        run: echo "Winter is coming indeed!"
